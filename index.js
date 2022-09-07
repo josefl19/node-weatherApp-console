@@ -2,7 +2,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import { inquirerMenu, leerInput, pausa } from "./helpers/inquirer.js";
+import { inquirerMenu, leerInput, listarLugares, pausa } from "./helpers/inquirer.js";
 import { Busquedas } from "./models/busquedas.js";
 
 const main = async() => {
@@ -15,23 +15,27 @@ const main = async() => {
         switch (opt) {
             case 1:
                 // Mostrar mensaje
-                const lugar = await leerInput('Ciudad: ');
-                await busqueda.ciudad(lugar);
-
+                const search = await leerInput('Ciudad: ');
+                
                 // Buscar lugares
-
+                const lugares = await busqueda.ciudad(search);
+                
                 // Seleccionar lugares
+                const id = await listarLugares(lugares);
+                if(id !== 0) {
+                    const lugarSeleccionado = lugares.find( l => l.id === id );
 
-                // Clima
+                    // Clima
 
-                // Mostrar resultados
-                console.log('\nInformación de la ciudad\n'.green);
-                console.log('Ciudad: ', );
-                console.log('Lat:', );
-                console.log('Lng:', );
-                console.log('Temperatura: ',);
-                console.log('Mínima: ',);
-                console.log('Máxima: ',);
+                    // Mostrar resultados
+                    console.log('\nInformación de la ciudad\n'.green);
+                    console.log('Ciudad: ', lugarSeleccionado.nombre);
+                    console.log('Lat:', lugarSeleccionado.lat);
+                    console.log('Lng:', lugarSeleccionado.lng);
+                    console.log('Temperatura: ',);
+                    console.log('Mínima: ',);
+                    console.log('Máxima: ',);
+                }
 
             break;
         
