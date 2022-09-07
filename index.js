@@ -2,6 +2,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
+import colors from 'colors';
 import { inquirerMenu, leerInput, listarLugares, pausa } from "./helpers/inquirer.js";
 import { Busquedas } from "./models/busquedas.js";
 
@@ -25,6 +26,9 @@ const main = async() => {
                 if(id !== 0) {
                     const lugarSeleccionado = lugares.find( l => l.id === id );
 
+                    // Guardar en DB
+                    busqueda.agregarHistorial(lugarSeleccionado.nombre);
+
                     // Clima
                     const climaLugar = await busqueda.climaLugar(lugarSeleccionado.lat, lugarSeleccionado.lng)
 
@@ -39,6 +43,14 @@ const main = async() => {
                     console.log('Estado del tiempo: ', climaLugar.desc);
                 }
 
+            break;
+
+            case 2:
+                // Historial de busquedas
+                busqueda.historialCapitalizado.forEach( (lugar, i) => {
+                    const idx = `${i+1}.`.green;
+                    console.log(`${ idx } ${ lugar }`);
+                });
             break;
         
             default:
